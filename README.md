@@ -1,5 +1,3 @@
-# Combine the full setup guide as a single Markdown (.md) file with clear instructions
-instruction_md = """
 # 🚀 Termux + Node.js + MySQL + PM2 Setup Guide
 
 This is a complete instruction guide to set up a portable Node.js + MySQL backend using Termux on Android.
