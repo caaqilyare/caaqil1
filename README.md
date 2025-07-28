@@ -29,12 +29,6 @@ pkg install wget curl git nano nodejs-lts mariadb
 mysqld_safe &
 ```
 
-Secure MySQL installation:
-
-```sh
-mysql_secure_installation
-```
-
 Then create a new MySQL user:
 
 ```sh
