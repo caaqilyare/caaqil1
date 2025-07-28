@@ -7,7 +7,7 @@
 ### 2. Update & Install Essentials
 ```sh
 pkg update && pkg upgrade
-pkg install wget curl git nano nodejs mariadb
+pkg install wget curl git nano nodejs-lts mariadb
 ```
 
 ### 3. MySQL (MariaDB) Setup
