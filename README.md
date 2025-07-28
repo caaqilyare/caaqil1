@@ -12,8 +12,7 @@ pkg install wget curl git nano nodejs mariadb
 
 ### 3. MySQL (MariaDB) Setup
 ```sh
-mysql_install_db
-mysqld_safe --datadir=/data/data/com.termux/files/usr/var/lib/mysql &
+mysqld_safe &
 ```
 - Secure MySQL: `mysql_secure_installation`
 - Create user:
