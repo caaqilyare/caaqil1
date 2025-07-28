@@ -18,6 +18,9 @@ Open Termux and run:
 
 ```sh
 pkg update && pkg upgrade
+```
+
+```sh
 pkg install wget curl git nano nodejs-lts mariadb
 ```
 
