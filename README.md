@@ -106,6 +106,9 @@ Create boot directory and script:
 
 ```sh
 mkdir -p ~/.termux/boot
+```
+
+```sh
 nano ~/.termux/boot/start-all.sh
 ```
 
