@@ -63,23 +63,7 @@ npm install
 
 ---
 
-## ✅ Step 5: Install PM2 and Start App
-
-```sh
-npm install -g pm2
-```
-
-```sh
-pm2 start npm --name muraad -- start
-```
-
-```sh
-pm2 save
-```
-
----
-
-## ✅ Step 6: Create .env File
+## ✅ Step 5: Create .env File
 
 ```sh
 nano .env
@@ -98,6 +82,23 @@ TZ=Africa/Mogadishu
 ```
 
 ---
+
+## ✅ Step 6: Install PM2 and Start App
+
+```sh
+npm install -g pm2
+```
+
+```sh
+pm2 start npm --name muraad -- start
+```
+
+```sh
+pm2 save
+```
+
+---
+
 
 ## ✅ Step 7: Setup Auto-Start on Boot
 
