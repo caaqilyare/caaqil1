@@ -39,7 +39,7 @@ mysql_secure_installation
 
 Then log in and create a new user:
 
-mysql -u root -p
+mysql -u root
 
 CREATE USER 'munasar'@'%' IDENTIFIED BY 'Munasar22';
 GRANT ALL PRIVILEGES ON *.* TO 'munasar'@'%' WITH GRANT OPTION;
