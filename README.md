@@ -1,135 +1,114 @@
-
 ---
-
 ## 🚀 Termux + Node.js + MySQL + PM2 Setup Guide
 
-### 1. Install Termux
+### 1. Install Termux & Termux:Boot
+- Download Termux and Termux:Boot from [F-Droid](https://f-droid.org/packages/com.termux/) or Google Play Store.
 
-- Download Termux from [F-Droid](https://f-droid.org/packages/com.termux/) (recommended) or Google Play Store.
-
-### 2. Update & Install Essential Packages
-
+### 2. Update & Install Essentials
 ```sh
 pkg update && pkg upgrade
-pkg install wget curl git nano
+pkg install wget curl git nano nodejs mariadb
 ```
 
-### 3. Install MySQL (MariaDB)
-
-```sh
-pkg install mariadb
-```
-
-#### Initialize and Start MySQL
-
+### 3. MySQL (MariaDB) Setup
 ```sh
 mysql_install_db
 mysqld_safe --datadir=/data/data/com.termux/files/usr/var/lib/mysql &
 ```
-
-#### Secure MySQL & Set Root Password
-
-```sh
-mysql_secure_installation
-```
-
-#### Create a MySQL User (with access from any host)
-
+- Secure MySQL: `mysql_secure_installation`
+- Create user:
 ```sql
-# Enter MySQL shell
 mysql -u root -p
-
-# In the MySQL prompt, run:
-CREATE USER 'youruser'@'%' IDENTIFIED BY 'yourpassword';
-GRANT ALL PRIVILEGES ON *.* TO 'youruser'@'%' WITH GRANT OPTION;
+CREATE USER 'munasar'@'%' IDENTIFIED BY 'Munasar22';
+GRANT ALL PRIVILEGES ON *.* TO 'munasar'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 EXIT;
 ```
 
-### 4. Install Node.js & npm
+### 4. Project Setup
 
 ```sh
-pkg install nodejs
-```
-
-### 5. Clone Your Project & Install Dependencies
-
-```sh
-git clone https://github.com/yourusername/yourproject.git
-cd yourproject
+git clone https://github.com/caaqilyare/caaqil1.git
+cd caaqil1
 npm install
 ```
 
-### 6. Install PM2 (Process Manager)
-
+### 5. PM2 Process Manager
 ```sh
 npm install -g pm2
-```
-
-### 7. Start Your App with PM2
-
-```sh
 pm2 start app.js --name "myapp"
 pm2 save
 ```
 
-### 8. Enable PM2 Startup on Boot
-
+### 6. Environment Variables (.env)
+Create `.env` with:
 ```sh
-pm2 startup
-# Follow the instructions printed by pm2 to add a command to your .bashrc or .profile
+nano .env
+```
+Example content:
+```env
+NODE_ENV=production
+PORT=5000
+HOST=localhost
+DB=muraad
+USER=munasar
+PASS=Munasar22
+TZ=Africa/Mogadishu
 ```
 
-#### Example: Add to `.bashrc`
+### 7. Auto-Start on Boot
+1. Create boot script directory:
+   ```sh
+   mkdir -p ~/.termux/boot
+   ```
+2. Create script:
+   ```sh
+   nano ~/.termux/boot/start-all.sh
+   ```
+3. Paste:
+   ```bash
+   #!/data/data/com.termux/files/usr/bin/bash
+   termux-wake-lock
+   echo "Starting MySQL safe mode..."
+   mysqld_safe &
+   echo "Waiting 10 seconds for MySQL to start..."
+   sleep 10
+   echo "Starting PM2 resurrect..."
+   pm2 resurrect
+   echo "Boot script finished."
+   ```
+4. Make executable:
+   ```sh
+   chmod +x ~/.termux/boot/start-all.sh
+   ```
+5. Reboot to test.
 
-```sh
-echo 'pm2 resurrect' >> ~/.bashrc
-```
-
-### 9. Customize Termux with nano and .bashrc
-
-- Open `.bashrc` with nano:
+### 8. Customize Termux
+- Edit `.bashrc` for aliases, greetings, etc.:
   ```sh
   nano ~/.bashrc
   ```
-- Add aliases, environment variables, or custom greetings. Example:
+  Example:
   ```sh
   echo "Welcome to your cool Termux dev environment! 🚀"
   alias ll='ls -alF'
   export TZ='Africa/Mogadishu'
   ```
 
-### 10. Useful PM2 Commands
-
-- List processes: `pm2 list`
-- Restart app: `pm2 restart myapp`
-- Stop app: `pm2 stop myapp`
-- View logs: `pm2 logs myapp`
-
----
-
-### 11. Create and Edit Your .env File with nano
-
-- Open (or create) your `.env` file with nano:
-  ```sh
-  nano .env
-  ```
-- Example `.env` content:
-  ```env
-  NODE_ENV=production
-  PORT=5000
-  HOST=localhost
-  DB=muraad
-  USER=root
-  PASS=yourpassword
-  TZ=Africa/Mogadishu
-  ```
-- Save and exit nano: Press `CTRL+O` to write, then `Enter`, then `CTRL+X` to exit.
+### 9. Useful PM2 Commands
+- List: `pm2 list`
+- Restart: `pm2 restart myapp`
+- Stop: `pm2 stop myapp`
+- Logs: `pm2 logs myapp`
 
 ---
 
-## 🎉 You’re Ready!
+**GitHub:** [caaqilyare](https://github.com/caaqilyare)  
+**MySQL User:** `munasar`  
+**MySQL Password:** `Munasar22`
 
-You now have a full Node.js + MySQL stack running on your Android device with Termux, managed by PM2, and a personalized shell environment. Happy coding!
+---
+
+🎉 You now have a powerful Node.js + MySQL stack on Android with Termux, PM2, and auto-boot! Happy coding!
 
 --- 
