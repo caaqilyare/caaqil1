@@ -35,7 +35,7 @@ npm install
 ### 5. PM2 Process Manager
 ```sh
 npm install -g pm2
-pm2 start app.js --name "myapp"
+pm2 start npm --name muraad -- start
 pm2 save
 ```
 
@@ -89,9 +89,7 @@ TZ=Africa/Mogadishu
   ```
   Example:
   ```sh
-  echo "Welcome to your cool Termux dev environment! 🚀"
-  alias ll='ls -alF'
-  export TZ='Africa/Mogadishu'
+bash ~/.termux/boot/start-all.sh
   ```
 
 ### 9. Useful PM2 Commands
