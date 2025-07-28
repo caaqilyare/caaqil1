@@ -51,7 +51,13 @@ EXIT;
 
 ```sh
 git clone https://github.com/caaqilyare/caaqil1.git
+```
+
+```sh
 cd caaqil1
+```
+
+```sh
 npm install
 ```
 
