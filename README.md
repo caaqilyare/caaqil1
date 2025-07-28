@@ -67,7 +67,13 @@ npm install
 
 ```sh
 npm install -g pm2
+```
+
+```sh
 pm2 start npm --name muraad -- start
+```
+
+```sh
 pm2 save
 ```
 
