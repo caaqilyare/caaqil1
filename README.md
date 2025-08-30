@@ -75,9 +75,10 @@ $cfg['Servers'][$i]['AllowNoPassword'] = true;
 php -d error_reporting=22527 -S localhost:8088 -t $PREFIX/share/phpmyadmin/
 ```
 
+Access phpMyAdmin at: 
 
 ```sh
-Access phpMyAdmin at: http://localhost:8088/
+http://localhost:8088/
 ```
 
 
