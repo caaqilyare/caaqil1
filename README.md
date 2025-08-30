@@ -47,7 +47,46 @@ EXIT;
 
 ---
 
-## ✅ Step 4: Clone and Set Up Project
+## ✅ Step 4: Set Up phpMyAdmin
+
+1. Navigate to phpMyAdmin directory:
+
+
+```sh
+cd $PREFIX/share/phpmyadmin
+```
+
+2. Configure phpMyAdmin:
+
+
+```sh
+nano config.inc.php
+```
+
+Add or edit:
+
+$cfg['Servers'][$i]['port'] = 3306;
+$cfg['Servers'][$i]['AllowNoPassword'] = true;
+
+3. Start PHP server for phpMyAdmin:
+
+
+```sh
+php -d error_reporting=22527 -S localhost:8088 -t $PREFIX/share/phpmyadmin/
+```
+
+
+```sh
+Access phpMyAdmin at: http://localhost:8088/
+```
+
+
+
+Deprecation warnings may appear, but phpMyAdmin will still work.
+
+---
+
+## ✅ Step 5: Clone and Set Up Project
 
 ```sh
 git clone https://github.com/caaqilyare/caaqil1.git
@@ -63,7 +102,7 @@ npm install
 
 ---
 
-## ✅ Step 5: Create .env File
+## ✅ Step 6: Create .env File
 
 ```sh
 nano .env
@@ -83,7 +122,7 @@ TZ=Africa/Mogadishu
 
 ---
 
-## ✅ Step 6: Install PM2 and Start App
+## ✅ Step 7: Install PM2 and Start App
 
 ```sh
 npm install -g pm2
@@ -100,7 +139,7 @@ pm2 save
 ---
 
 
-## ✅ Step 7: Setup Auto-Start on Boot
+## ✅ Step 8: Setup Auto-Start on Boot
 
 Create boot directory and script:
 
@@ -133,7 +172,7 @@ chmod +x ~/.termux/boot/start-all.sh
 
 ---
 
-## ✅ Step 8: Optional - Auto Start in .bashrc
+## ✅ Step 9: Optional - Auto Start in .bashrc
 
 ```sh
 nano ~/.bashrc
@@ -147,7 +186,7 @@ bash ~/.termux/boot/start-all.sh
 
 ---
 
-## ✅ Step 9: PM2 Command Reference
+## ✅ Step 10: PM2 Command Reference
 
 | Command              | Description                |
 |----------------------|----------------------------|
@@ -169,9 +208,3 @@ You now have a fully working mobile backend stack with:
 
 > 👨‍💻 By: **Munasar** | 🌐 Repo: [github.com/caaqilyare/caaqil1](https://github.com/caaqilyare/caaqil1)
 """
-
-# Save the file as a markdown
-md_path = Path("/mnt/data/termux-node-mysql-setup.md")
-md_path.write_text(instruction_md)
-
-md_path.name
