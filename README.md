@@ -21,7 +21,7 @@ pkg update && pkg upgrade
 ```
 
 ```sh
-pkg install wget curl git nano nodejs-lts mariadb
+pkg install wget curl git nano nodejs-lts php phpmyadmin mariadb
 ```
 
 ---
