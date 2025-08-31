@@ -116,8 +116,8 @@ NODE_ENV=production
 PORT=5000
 HOST=localhost
 DB=muraad
-USER=munasar
-PASS=Munasar22
+USER=root
+PASS=
 TZ=Africa/Mogadishu
 ```
 
