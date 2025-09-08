@@ -155,8 +155,9 @@ nano ~/.termux/boot/start-all.sh
 Paste into script:
 
 ```bash
-#!/data/data/com.termux/files/usr/bin/bash
+#!/data/data/com.termux/files/usr/bin/sh
 termux-wake-lock
+sshd
 echo "Starting MySQL safe mode..."
 mysqld_safe &
 sleep 10
