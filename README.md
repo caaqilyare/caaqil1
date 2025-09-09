@@ -197,35 +197,50 @@ progress() {
   echo ""
 }
 
+# Hubinta wake-lock
+check_wakelock() {
+  if termux-wake-status | grep -q "Held"; then
+    log_ok "Wake-lock wuu socdaa"
+  else
+    log_step "Wake-lock lama helin, hadda waa la daarayaa..."
+    termux-wake-lock
+    log_ok "Wake-lock waa la daaray"
+  fi
+}
+
 clear
 # Banner weyn oo Muraad ah
 figlet -f slant "Muraad" | lolcat
 echo "${BOLD}${CYAN}🚀 Muraad App ayaa la bilaabay${RESET}"
 line
 
-# Step 1 - Database
-log_step "Database ayaa la bilaabay..."
+# Step 1 - Database (hal mar)
+log_step "Database ♻️"
 mysqld_safe >/dev/null 2>&1 &
 progress 5
-log_ok "Database wuu socdaa"
+log_ok "Database ✅️"
 
 line
-# Step 2 - PM2 Resurrect (Adeegyada App)
-log_step "PM2 Resurrect ayaa la bilaabay..."
+# Step 2 - PM2 Resurrect (hal mar)
+log_step "Muraad App ♻️"
 pm2 resurrect >/dev/null 2>&1 &
 progress 6
-log_ok "Adeegyada App wuu socdaa"
+log_ok "Muraad App ✅️"
 
 line
 # Step 3 - Final status
-log_ok "🔥 Dhammaan adeegyada waa shaqeynayaan"
-echo "${BOLD}${GREEN}✨ Muraad App 2025 ✨${RESET}"
-echo "${BOLD}${CYAN}By Munasar, 615050435${RESET}"
+log_ok "🔥 Muraad app is Runing ✅️"
+echo "${BOLD}${GREEN}✨ Muraad App  ✨${RESET}"
+echo "${BOLD}${CYAN}By Munasar $(date '+%Y'), 615050435${RESET}"
 line
 
-
-
-
+# Monitor loop - Hubinta wake-lock kaliya 30s kasta
+while true; do
+  sleep 30
+  log_step "Hubinta wake-lock..."
+  check_wakelock
+  line
+done
 
 ```
 
