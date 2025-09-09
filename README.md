@@ -152,7 +152,18 @@ mkdir -p ~/.termux/boot
 nano ~/.termux/boot/start-all.sh
 ```
 
-Paste into script:
+
+install  figlet and lolcat
+
+```sh
+pkg install ruby figlet -y
+```
+
+```sh
+gem install lolcat
+```
+
+Then paste into script:
 
 ```bash
 #!/data/data/com.termux/files/usr/bin/sh
