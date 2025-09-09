@@ -158,12 +158,64 @@ Paste into script:
 #!/data/data/com.termux/files/usr/bin/sh
 termux-wake-lock
 sshd
-echo "Starting MySQL safe mode..."
-mysqld_safe &
-sleep 10
-echo "Starting PM2 resurrect..."
-pm2 resurrect
-echo "✅ Boot script finished."
+
+# Midabyo iyo styles
+GREEN=$(tput setaf 2)
+YELLOW=$(tput setaf 3)
+CYAN=$(tput setaf 6)
+RESET=$(tput sgr0)
+BOLD=$(tput bold)
+
+line() {
+  echo "${CYAN}========================================${RESET}"
+}
+
+log_step() {
+  echo "[$(date '+%H:%M:%S')] ${YELLOW}➡️${RESET} $1"
+}
+
+log_ok() {
+  echo "[$(date '+%H:%M:%S')] ${GREEN}✅${RESET} $1"
+}
+
+progress() {
+  for i in $(seq 1 $1); do
+    echo -n "."
+    sleep 0.5
+  done
+  echo ""
+}
+
+clear
+# Banner weyn oo Muraad ah
+figlet -f slant "Muraad" | lolcat
+echo "${BOLD}${CYAN}🚀 Muraad App ayaa la bilaabay${RESET}"
+line
+
+# Step 1 - Database
+log_step "Database ayaa la bilaabay..."
+mysqld_safe >/dev/null 2>&1 &
+progress 5
+log_ok "Database wuu socdaa"
+
+line
+# Step 2 - PM2 Resurrect (Adeegyada App)
+log_step "PM2 Resurrect ayaa la bilaabay..."
+pm2 resurrect >/dev/null 2>&1 &
+progress 6
+log_ok "Adeegyada App wuu socdaa"
+
+line
+# Step 3 - Final status
+log_ok "🔥 Dhammaan adeegyada waa shaqeynayaan"
+echo "${BOLD}${GREEN}✨ Muraad App 2025 ✨${RESET}"
+echo "${BOLD}${CYAN}By Munasar, 615050435${RESET}"
+line
+
+
+
+
+
 ```
 
 Make it executable:
