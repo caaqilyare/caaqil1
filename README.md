@@ -156,7 +156,7 @@ nano ~/.termux/boot/start-all.sh
 install  figlet and lolcat
 
 ```sh
-pkg install ruby figlet -y
+pkg install ruby figlet termux-api -y
 ```
 
 ```sh
