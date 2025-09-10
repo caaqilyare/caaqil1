@@ -28,49 +28,56 @@ class Customer {
     }
     // Habka lagu helo macmiil iyadoo la raadinayo hormuud nambarka iyo isticmaalaha
     static findCustomerByNumber(amount, hormuud, user_id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const MyData = [amount, hormuud, user_id].map(item => Number(item));
-                const result = yield db.raw(`
-                SELECT 
-                m.h_number AS hormuud, 
-                m.name, 
-                m.types AS macaamiil_types, 
-                m.s_number AS somtel, 
-                m.xaalada,
-                m.cid,
-                m.reff_id,
-                CURRENT_TIMESTAMP AS time,
-                COALESCE(l.amount, '') AS amount,
-                COALESCE(l.send, '') AS send, 
-                COALESCE(l.types, '') AS amountTypes, 
-                COALESCE(l.short, '') AS short, 
-                u.pin, 
-                u.user_id 
-            FROM macaamiil m
-            LEFT JOIN lacag l ON m.user_id = l.user_id 
-                AND l.amount = ? 
-                AND l.types = m.types
-            JOIN user_login u ON m.user_id = u.user_id
-            WHERE m.h_number = ? 
-                AND u.user_id = ? 
-                AND m.xaalada != 'banned'   
-                AND COALESCE(l.types, '') != '';
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const numAmount = Number(amount);
+            const numHormuud = Number(hormuud);
+            const numUserId = Number(user_id);
 
-                `, MyData);
-                if (result && result[0] && result[0].length > 0) {
-                    return result[0][0]; // Soo celi safka koowaad ee natiijada
-                }
-                else {
-                    return null; // Haddii macmiil lama helin
-                }
+            // Hubinta NaN
+            if (isNaN(numAmount) || isNaN(numHormuud) || isNaN(numUserId)) {
+                throw new Error("Amount, hormuud, ama user_id waa inay noqdaan tiro sax ah");
             }
-            catch (error) {
-                console.error('Khalad ka dhacay helitaanka macmiilka lambarka:', error);
-                throw error;
+
+            const result = yield db.raw(`
+                SELECT 
+                    m.h_number AS hormuud, 
+                    m.name, 
+                    m.types AS macaamiil_types, 
+                    m.s_number AS somtel, 
+                    m.xaalada,
+                    m.cid,
+                    m.reff_id,
+                    CURRENT_TIMESTAMP AS time,
+                    COALESCE(l.amount, '') AS amount,
+                    COALESCE(l.send, '') AS send, 
+                    COALESCE(l.types, '') AS amountTypes, 
+                    COALESCE(l.short, '') AS short, 
+                    u.pin, 
+                    u.user_id 
+                FROM macaamiil m
+                LEFT JOIN lacag l ON m.user_id = l.user_id 
+                    AND l.amount = ? 
+                    AND l.types = m.types
+                JOIN user_login u ON m.user_id = u.user_id
+                WHERE m.h_number = ? 
+                    AND u.user_id = ? 
+                    AND m.xaalada != 'banned'   
+                    AND COALESCE(l.types, '') != '';
+            `, [numAmount, numHormuud, numUserId]);
+
+            if (result && result[0] && result[0].length > 0) {
+                return result[0][0];
+            } else {
+                return null;
             }
-        });
-    }
+
+        } catch (error) {
+            console.error('Khalad ka dhacay helitaanka macmiilka lambarka:', error);
+            throw error;
+        }
+    });
+}
     // Habka lagu raadsho macaamiisha iyadoo la isticmaalayo erey raadin iyo isticmaalaha
     static searchCustomers(user_id_1) {
         return __awaiter(this, arguments, void 0, function* (user_id, searchTerm = '', page = 1, limit = 10) {
