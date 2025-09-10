@@ -170,6 +170,7 @@ Then paste into script:
 termux-wake-lock
 sshd
 
+# Styles
 GREEN=$(tput setaf 2)
 YELLOW=$(tput setaf 3)
 CYAN=$(tput setaf 6)
@@ -217,9 +218,10 @@ mysqld_safe >/dev/null 2>&1 &
 progress_percentage 5 "Database"
 log_ok "💾 Database ✅️"
 
-# PM2
+# Nodemon (npm run watch)
 log_step "⚡ Muraad App bilaw..."
-pm2 resurrect >/dev/null 2>&1 &
+cd ~/caaqil1
+npm run watch >/dev/null 2>&1 &
 progress_percentage 5 "Muraad App"
 log_ok "⚡ Muraad App ✅️"
 
@@ -240,7 +242,6 @@ while true; do
   echo "${BOLD}${CYAN}By Munasar $(date '+%Y'), 615050435${RESET}"
   line
 done
-
 ```
 
 Make it executable:
