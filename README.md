@@ -166,79 +166,78 @@ gem install lolcat
 Then paste into script:
 
 ```bash
-#!/data/data/com.termux/files/usr/bin/sh
+#!/data/data/com.termux/files/usr/bin/bash
 termux-wake-lock
 sshd
 
-# Midabyo iyo styles
 GREEN=$(tput setaf 2)
 YELLOW=$(tput setaf 3)
 CYAN=$(tput setaf 6)
 RESET=$(tput sgr0)
 BOLD=$(tput bold)
+LOG_FILE="$HOME/.termux/boot/muraad.log"
 
-line() {
-  echo "${CYAN}========================================${RESET}"
-}
+line() { echo "${CYAN}========================================${RESET}"; }
 
-log_step() {
-  echo "[$(date '+%H:%M:%S')] ${YELLOW}➡️${RESET} $1"
-}
+log_step() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] ➡️ $1" | tee -a "$LOG_FILE"; }
+log_ok() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] ✅ $1" | tee -a "$LOG_FILE"; }
 
-log_ok() {
-  echo "[$(date '+%H:%M:%S')] ${GREEN}✅${RESET} $1"
-}
-
-progress() {
-  for i in $(seq 1 $1); do
-    echo -n "."
-    sleep 0.5
+progress_percentage() {
+  duration=$1
+  task_name=$2
+  for i in $(seq 0 $duration); do
+    percent=$(( i * 100 / duration ))
+    echo -ne "["
+    for j in $(seq 1 $i); do echo -n "="; done
+    for j in $(seq $i $duration); do echo -n " "; done
+    echo -ne "] $percent% $task_name\r"
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $task_name $percent%" >> "$LOG_FILE"
+    sleep 1
   done
   echo ""
 }
 
-# Hubinta wake-lock
-check_wakelock() {
-  if termux-wake-status | grep -q "Held"; then
-    log_ok "Wake-lock wuu socdaa"
-  else
-    log_step "Wake-lock lama helin, hadda waa la daarayaa..."
-    termux-wake-lock
-    log_ok "Wake-lock waa la daaray"
-  fi
+blink_text() { text="$1"; for i in {1..3}; do echo -ne "${BOLD}${CYAN}$text${RESET}\r"; sleep 0.5; echo -ne "                     \r"; sleep 0.5; done; echo "$text"; }
+
+floating_emoji() { emojis=("🚀" "✨" "💡" "🔥" "⚡"); for i in {1..10}; do echo -ne "${emojis[$((RANDOM % ${#emojis[@]}))]} "; sleep 0.2; done; echo ""; }
+
+dashboard() {
+  clear
+  figlet -f slant "Muraad" | lolcat
+  echo "${BOLD}${CYAN}🚀 Muraad App Running 🔥${RESET}"
+  line
+  echo "${BOLD}${GREEN}💾 Database ✅️${RESET}"
+  echo "${BOLD}${YELLOW}⚡ Muraad App ✅️${RESET}"
+  line
 }
 
-clear
-# Banner weyn oo Muraad ah
-figlet -f slant "Muraad" | lolcat
-echo "${BOLD}${CYAN}🚀 Muraad App ayaa la bilaabay${RESET}"
-line
-
-# Step 1 - Database (hal mar)
-log_step "Database ♻️"
+# Database
+log_step "💾 Database bilaw..."
 mysqld_safe >/dev/null 2>&1 &
-progress 5
-log_ok "Database ✅️"
+progress_percentage 5 "Database"
+log_ok "💾 Database ✅️"
 
-line
-# Step 2 - PM2 Resurrect (hal mar)
-log_step "Muraad App ♻️"
+# PM2
+log_step "⚡ Muraad App bilaw..."
 pm2 resurrect >/dev/null 2>&1 &
-progress 6
-log_ok "Muraad App ✅️"
+progress_percentage 5 "Muraad App"
+log_ok "⚡ Muraad App ✅️"
 
-line
-# Step 3 - Final status
-log_ok "🔥 Muraad app is Runing ✅️"
-echo "${BOLD}${GREEN}✨ Muraad App  ✨${RESET}"
-echo "${BOLD}${CYAN}By Munasar $(date '+%Y'), 615050435${RESET}"
-line
+# Wake-lock 30s check
+wake_lock_check() {
+  log_step "⏳ Wake-lock 30s check..."
+  progress_percentage 30 "Wake-lock"
+  termux-wake-lock
+  log_ok "🔒 Wake-lock waa la hubiyay"
+  blink_text "Muraad App waa live ✅"
+  floating_emoji
+}
 
-# Monitor loop - Hubinta wake-lock kaliya 30s kasta
+# Loop monitor
 while true; do
-  sleep 30
-  log_step "Hubinta wake-lock..."
-  check_wakelock
+  dashboard
+  wake_lock_check
+  echo "${BOLD}${CYAN}By Munasar $(date '+%Y'), 615050435${RESET}"
   line
 done
 
