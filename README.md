@@ -198,9 +198,25 @@ progress_percentage() {
   echo ""
 }
 
-blink_text() { text="$1"; for i in {1..3}; do echo -ne "${BOLD}${CYAN}$text${RESET}\r"; sleep 0.5; echo -ne "                     \r"; sleep 0.5; done; echo "$text"; }
+blink_text() {
+  text="$1"
+  for i in {1..3}; do
+    echo -ne "${BOLD}${CYAN}$text${RESET}\r"
+    sleep 0.5
+    echo -ne "                     \r"
+    sleep 0.5
+  done
+  echo "${BOLD}${CYAN}$text${RESET}"
+}
 
-floating_emoji() { emojis=("🚀" "✨" "💡" "🔥" "⚡"); for i in {1..10}; do echo -ne "${emojis[$((RANDOM % ${#emojis[@]}))]} "; sleep 0.2; done; echo ""; }
+floating_emoji() {
+  emojis=("🚀" "✨" "💡" "🔥" "⚡")
+  for i in {1..10}; do
+    echo -ne "${emojis[$((RANDOM % ${#emojis[@]}))]} "
+    sleep 0.2
+  done
+  echo ""
+}
 
 dashboard() {
   clear
@@ -212,7 +228,9 @@ dashboard() {
   line
 }
 
-# Database
+# Fresh start
+clear
+dashboard
 log_step "💾 Database bilaw..."
 mysqld_safe >/dev/null 2>&1 &
 progress_percentage 5 "Database"
@@ -221,26 +239,30 @@ log_ok "💾 Database ✅️"
 # Nodemon (npm run watch)
 log_step "⚡ Muraad App bilaw..."
 cd ~/caaqil1
-npm run watch >/dev/null 2>&1 &
+npm run watch | tee -a "$LOG_FILE" &
 progress_percentage 5 "Muraad App"
 log_ok "⚡ Muraad App ✅️"
 
-# Wake-lock 30s check
-wake_lock_check() {
+# Wake-lock cycle
+wake_lock_cycle() {
   log_step "⏳ Wake-lock 30s check..."
   progress_percentage 30 "Wake-lock"
+  termux-wake-unlock
+  log_ok "🔓 Wake-lock OFF"
+  sleep 2
   termux-wake-lock
-  log_ok "🔒 Wake-lock waa la hubiyay"
+  log_ok "🔒 Wake-lock ON"
   blink_text "Muraad App waa live ✅"
   floating_emoji
 }
 
-# Loop monitor
+# Continuous loop monitor
 while true; do
   dashboard
-  wake_lock_check
+  wake_lock_cycle
   echo "${BOLD}${CYAN}By Munasar $(date '+%Y'), 615050435${RESET}"
   line
+  sleep 1
 done
 ```
 
