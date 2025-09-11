@@ -8,7 +8,7 @@
     "server": "ts-node backend/app.ts",
     "client": "npm run dev --prefix frontend",
     "dev": "concurrently \"npm run watch\" \"npm run client\"",
-    "watch": "nodemon backend/app.ts"
+    "watch": "nodemon dist/app.js"
   },
   "keywords": [],
   "author": "",
