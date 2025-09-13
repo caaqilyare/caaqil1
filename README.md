@@ -263,7 +263,7 @@ while true; do
   echo "${BOLD}${CYAN}By Munasar $(date '+%Y'), 615050435${RESET}"
   line
   sleep 1
-done
+done 
 ```
 
 Make it executable:
